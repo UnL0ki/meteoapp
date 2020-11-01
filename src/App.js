@@ -1,44 +1,43 @@
-import React, { useState } from 'react';
-import './App.css';
-
-
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
+import Searchbar from "./components/search/Searchbar";
 
 function App() {
-
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
-
-const search = evt => {
-  if (evt.key === "Enter") {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&APPID=0dab5eddf0fd42089995a0bbd0932c3f`)
-      .then(res => res.json())
-      .then(result => {
-        setWeather(result);
-        setQuery('');
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    search();
+  }, [query]);
+  const search = () => {
+    axios
+      .get(
+        `http://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&APPID=0dab5eddf0fd42089995a0bbd0932c3f`
+      )
+      .then((result) => {
+        setWeather(result.data);
+        console.log("njarb", result);
+        setError(false);
+      })
+      .catch((error) => {
+        setError(true);
       });
-  }
+  };
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  return (
+    <div className="search">
+      <Searchbar
+        handleChange={handleChange}
+        handlePress={search}
+        value={query}
+      />
+      {error ? <h1>something went wrong </h1> : <div>{weather.name}</div>}
+    </div>
+  );
 }
-    
-                  return(
-                  
-                  <div className="search">
-                     
-                     <input type="search"
-                      className="search-bar" 
-                      placeholder="Search" 
-                      onChange={e => setQuery(e.target.value)}
-                      value={query}
-                      onKeyPress={search}
-                      />
-                    
 
-                  <div>{weather.name} {weather.main.temp}</div>
-
-                  </div>
-                     
-                  
-                  );
-              }
-        
-    
 export default App;
