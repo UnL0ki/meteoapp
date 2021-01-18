@@ -36,7 +36,14 @@ function App() {
         handlePress={search}
         value={query}
       />
-      {error ? <h1>something went wrong </h1> : <Title title={weather.name} />}
+      {error ? (
+        <h1>something went wrong </h1>
+      ) : (
+        // ? is a new javascript feature named optional chaning check it here  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+        // before optional chaning appear we used syntax like this weather && weather.name && weather.name.temp
+        <Title title={weather.name?.temp} />
+      )}
+      {JSON.stringify(weather)}
     </div>
   );
 }
