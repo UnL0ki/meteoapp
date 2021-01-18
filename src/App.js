@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import Searchbar from "./components/search/Searchbar";
+import Title from "./components/title/Title";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -35,7 +36,7 @@ function App() {
         handlePress={search}
         value={query}
       />
-      {error ? <h1>something went wrong </h1> : <div>{weather.name}</div>}
+      {error ? <h1>something went wrong </h1> : <Title title={weather.name} />}
     </div>
   );
 }
